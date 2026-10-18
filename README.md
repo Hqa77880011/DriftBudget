@@ -33,7 +33,7 @@ python -m driftbudget suite --data data/reproduce.jsonl --output runs/comparison
 
 ## Outputs
 
-Each `runs/<run>/<method>/` contains `records.jsonl` and `metrics.json`. The suite also writes `summary.csv`. The statistics command summarizes the main run records; plot inputs are method run directories.
+Each `runs/<run>/<method>/` contains `records.jsonl` and `metrics.json`. Plotting writes `figures/summary.csv` and per-metric figures. The statistics command summarizes the main run records; plot inputs are method run directories.
 
 ```bash
 python -m driftbudget.statistics --records runs/main/driftbudget/records.jsonl --output results/intervals.json
@@ -42,4 +42,4 @@ python -m driftbudget plot --inputs runs/comparison/driftbudget --output figures
 
 ## Verification
 
-Source checks used Python 3.13.5. Installed dependency metadata: numpy 2.1.3, scipy 1.15.3, scikit-learn 1.6.1, matplotlib 3.10.0. Python AST, configuration files, CLI parser definitions and source input/output paths were checked without invoking command handlers. Training, full evaluation and CI were not run for this review.
+Source checks used Python 3.13.5. Installed dependency metadata: numpy 2.1.3, scipy 1.15.3, scikit-learn 1.6.1, matplotlib 3.10.0. Python AST, configuration files, CLI parser definitions and source input/output paths were checked without invoking command handlers. Training and full evaluation were not run for this review. The GitHub Actions workflow checks packaging and source code.
