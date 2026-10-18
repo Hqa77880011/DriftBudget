@@ -147,8 +147,9 @@ def main():
     sub = parser.add_subparsers(dest="command", required=True)
     prepare = sub.add_parser("prepare")
     prepare.add_argument("--output", required=True)
-    prepare.add_argument("--count", type=int, default=200)
-    prepare.add_argument("--seed", type=int, default=17)
+    prepare.add_argument("--config", help="Registered generator count/seed JSON")
+    prepare.add_argument("--count", type=int)
+    prepare.add_argument("--seed", type=int)
     for name in ("run", "suite"):
         item = sub.add_parser(name)
         item.add_argument("--data", required=True)
@@ -164,11 +165,16 @@ def main():
     item.add_argument("--output", required=True)
     args = parser.parse_args()
     if args.command == "prepare":
-        if args.count < 1:
+        profile = json.loads(Path(args.config).read_text(encoding="utf-8")) if args.config else {}
+        count = args.count if args.count is not None else profile.get("count", 200)
+        seed = args.seed if args.seed is not None else profile.get("seed", 17)
+        if count < 1:
             parser.error("--count must be positive")
-        rows = list(core.generate(random.Random(args.seed), args.count))
+        rows = list(core.generate(random.Random(seed), count))
         for row in rows:
-            row["id"] = str(args.seed) + ":" + row["id"]
+            row["id"] = str(seed) + ":" + row["id"]
+            if "family" in row:
+                row["family"] = str(seed) + ":" + row["family"]
         write_jsonl(args.output, rows)
     elif args.command in ("run", "suite"):
         cases = read_jsonl(args.data)

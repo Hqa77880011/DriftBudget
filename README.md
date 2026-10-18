@@ -63,3 +63,16 @@ python -m driftbudget.statistics --records runs/main/driftbudget/records.jsonl -
 ```
 
 Supply --reference with a matched record file for paired differences. Resampling uses independent case IDs, or explicit cluster IDs when provided. Repeated observations from one source unit must share cluster. Zero-event bounds refer to an event in an independent cluster.
+
+## Registered compact reproduction setting
+
+Eight independent finite streams, eight features/three labels, 100 independent warm events and 240 online events per stream. The linear masked predictor and Gaussian conditional feature law implement the declared drift-conditioned acquisition problem.
+
+Run from the repository root after installation. The following commands use the registered setting; they are provided for execution and have not been run as part of the source review.
+
+```bash
+python -m driftbudget prepare --config configs/reproduce.json --output data/reproduce.jsonl
+python -m driftbudget suite --data data/reproduce.jsonl --output runs/reproduce
+```
+
+This setting needs no external dataset or pretrained weights. Generated inputs and declared fault/shift laws define the finite task; reported quantities retain that provenance.
